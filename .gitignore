@@ -1,0 +1,10 @@
+elpa/
+.cache/
+transient/
+auto-save-list/
+elpher-certificates/
+games/
+*~
+.DS_Store
+tramp
+projects
