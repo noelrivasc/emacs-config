@@ -68,6 +68,11 @@
   :ensure t
   :bind ("C-x t t" . treemacs))
 
+;; --- Git porcelain: Magit ---
+(use-package magit
+  :ensure t
+  :bind ("C-c g" . magit-status))
+
 ;; --- Clojure support ---
 (use-package clojure-mode             ;; teaches Emacs Clojure's syntax
   :ensure t)
@@ -76,7 +81,10 @@
   :ensure t)                          ;; entry point: M-x cider-jack-in
 
 ;; Load nicer theme
-(load-theme 'modus-vivendi t)
+(use-package solarized-theme
+  :ensure t
+  :init
+  (load-theme 'solarized-dark t))
 
 (when (display-graphic-p)
   (setq ns-command-modifier 'meta
