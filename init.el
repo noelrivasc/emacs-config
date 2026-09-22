@@ -98,3 +98,38 @@
   :config
   (evil-mode 1)
   (evil-set-initial-state 'treemacs-mode 'emacs)) ; treemacs = plain Emacs, no evil
+
+;; Elpher - Gemini client
+(use-package elpher
+  :ensure t)
+
+;; Markdown Mode
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+         ("C-c C-e" . markdown-do)))
+
+;; Mouse: click to select windows, wheel to scroll (works in GUI and terminal)
+(xterm-mouse-mode 1)                       ; no-op in GUI frames; enables mouse in tty
+(mouse-wheel-mode 1)
+(setq mouse-wheel-progressive-speed nil    ; constant scroll speed
+      mouse-wheel-scroll-amount '(3 ((shift) . 1))
+      mouse-drag-and-drop-region t)
+
+;; Interact with host clipboard (works from Lima or OS X)
+(defconst host-ssh-address "noel.rivas@192.168.5.2")
+
+(defun my-pbcopy (beg end)
+  (interactive "r")
+  (if (executable-find "pbcopy")
+      (call-process-region beg end "pbcopy")
+    (call-process-region beg end "ssh" nil nil nil
+                         host-ssh-address "pbcopy")))
+
+(defun my-pbpaste ()
+  (interactive)
+  (if (executable-find "pbpaste")
+      (call-process "pbpaste" nil t)
+    (call-process "ssh" nil t nil host-ssh-address "pbpaste")))
