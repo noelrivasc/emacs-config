@@ -22,6 +22,18 @@
   :bind (("C-c l" . avy-goto-char-timer)
          ("C-c k" . avy-goto-char-2)))
 
+(defun my-avy-insert-remote-symbol ()
+  "Jump with avy, grab the symbol there, insert it back at point."
+  (interactive)
+  (let ((win (selected-window))
+        (pt (point))
+        (avy-all-windows t))
+    (call-interactively #'avy-goto-symbol-1)
+    (let ((sym (thing-at-point 'symbol)))
+      (select-window win)
+      (goto-char pt)
+      (insert sym))))
+
 ;; --- Ctrl-P equivalent: fuzzy-find files in the current project ---
 ;; project.el (file search + project-root detection) ships with Emacs
 ;; itself, already bound to `C-x p f`. These two packages just make its
@@ -99,6 +111,10 @@
   (evil-mode 1)
   (evil-set-initial-state 'treemacs-mode 'emacs)) ; treemacs = plain Emacs, no evil
 
+;; Evil mode key bindings
+(define-key evil-normal-state-map (kbd "s") 'avy-goto-char-timer)
+(define-key evil-normal-state-map (kbd "S") 'my-avy-insert-remote-symbol)
+
 ;; Elpher - Gemini client
 (use-package elpher
   :ensure t)
@@ -133,3 +149,20 @@
   (if (executable-find "pbpaste")
       (call-process "pbpaste" nil t)
     (call-process "ssh" nil t nil host-ssh-address "pbpaste")))
+
+;; Revert automatically on filesystem buffer changes
+(global-auto-revert-mode 1)
+(setq auto-revert-avoid-polling t)
+(setq auto-revert-interval 0)
+(add-hook 'after-focus-change-function
+           (lambda () (when (frame-focus-state) (auto-revert-buffers))))
+
+;; Kill all unmodified buffers swiftly
+(defun kill-matching-buffers-smart (regexp)
+  (interactive "sKill buffers matching: ")
+  (dolist (buf (buffer-list))
+    (when (string-match regexp (buffer-name buf))
+      (if (buffer-modified-p buf)
+          (when (yes-or-no-p (format "Kill modified buffer %s? " (buffer-name buf)))
+            (kill-buffer buf))
+        (kill-buffer buf)))))
