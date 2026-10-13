@@ -83,7 +83,7 @@
 ;; --- Git porcelain: Magit ---
 (use-package magit
   :ensure t
-  :bind ("C-c g" . magit-status))
+  :bind ("C-x g" . magit-status))
 
 ;; --- Clojure support ---
 (use-package clojure-mode             ;; teaches Emacs Clojure's syntax
