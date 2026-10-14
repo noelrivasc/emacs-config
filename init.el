@@ -165,8 +165,8 @@
 (global-auto-revert-mode 1)
 (setq auto-revert-avoid-polling t)
 (setq auto-revert-interval 0)
-(add-hook 'after-focus-change-function
-           (lambda () (when (frame-focus-state) (auto-revert-buffers))))
+(add-function :after after-focus-change-function
+              (lambda () (when (frame-focus-state) (auto-revert-buffers))))
 
 ;; Kill all unmodified buffers swiftly
 (defun kill-matching-buffers-smart (regexp)
@@ -177,3 +177,8 @@
           (when (yes-or-no-p (format "Kill modified buffer %s? " (buffer-name buf)))
             (kill-buffer buf))
         (kill-buffer buf)))))
+
+;; Vterm shell emulator
+(use-package vterm
+  :ensure t)
+
