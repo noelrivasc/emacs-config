@@ -127,6 +127,17 @@
   :bind (:map markdown-mode-map
          ("C-c C-e" . markdown-do)))
 
+;; --- YAML: built-in tree-sitter mode, no package needed ---
+;; Only the grammar is downloaded + compiled (once) into tree-sitter/.
+;; Pinned to v0.7.0: newer tags use grammar ABI 15, but Debian's
+;; libtree-sitter (what this Emacs links against) only reads up to 14.
+(require 'treesit)
+(add-to-list 'treesit-language-source-alist
+             '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "v0.7.0"))
+(unless (treesit-language-available-p 'yaml)
+  (treesit-install-language-grammar 'yaml))
+(add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
+
 ;; Mouse: click to select windows, wheel to scroll (works in GUI and terminal)
 (xterm-mouse-mode 1)                       ; no-op in GUI frames; enables mouse in tty
 (mouse-wheel-mode 1)

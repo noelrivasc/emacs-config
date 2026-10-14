@@ -4,7 +4,11 @@ transient/
 auto-save-list/
 elpher-certificates/
 games/
+eln-cache/
+tree-sitter/
 *~
 .DS_Store
 tramp
 projects
+custom.el
+bookmarks
