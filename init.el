@@ -85,12 +85,37 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+(use-package diff-hl
+  :ensure t
+  :hook (after-init . global-diff-hl-mode)
+  :hook (magit-pre-refresh  . diff-hl-magit-pre-refresh)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh))
+
 ;; --- Clojure support ---
 (use-package clojure-mode             ;; teaches Emacs Clojure's syntax
   :ensure t)
 
 (use-package cider                    ;; REPL + evaluation, like conjure
   :ensure t)                          ;; entry point: M-x cider-jack-in
+
+;; --- PHP Support ---
+;; (unless (package-installed-p 'php-mode)
+;;   (package-refresh-contents)
+;;   (package-install 'php-mode))
+;; 
+;; (require 'php-mode)
+;; (add-hook 'php-mode-hook #'eglot-ensure)
+;; 
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(php-mode . ("intelephense" "--stdio"))))
+
+;; --- .editorconfig ---
+(unless (package-installed-p 'editorconfig)
+  (package-refresh-contents)
+  (package-install 'editorconfig))
+
+(editorconfig-mode 1)
 
 ;; Load nicer theme
 (use-package solarized-theme
@@ -178,7 +203,14 @@
             (kill-buffer buf))
         (kill-buffer buf)))))
 
-;; Vterm shell emulator
+;; Terminal emulators
 (use-package vterm
   :ensure t)
+(evil-set-initial-state 'vterm-mode 'emacs)
 
+(use-package ghostel
+  :ensure t)
+(evil-set-initial-state 'ghostel-mode 'emacs)
+
+(dolist (mode '(vterm-mode-hook ghostel-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode -1))))
