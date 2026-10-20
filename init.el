@@ -85,6 +85,12 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+;; make magit diff filenames readable as separators
+(custom-set-faces
+ '(magit-diff-file-heading ((t (:foreground "#268bd2" :weight bold))))
+ '(magit-diff-file-heading-highlight ((t (:foreground "#268bd2" :weight bold :background "#073642")))))
+
+;; Show git status indicators in the gutter
 (use-package diff-hl
   :ensure t
   :hook (after-init . global-diff-hl-mode)
@@ -214,3 +220,4 @@
 
 (dolist (mode '(vterm-mode-hook ghostel-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode -1))))
+
