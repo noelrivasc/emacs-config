@@ -85,6 +85,11 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+;; make magit diff filenames readable as separators
+(custom-set-faces
+ '(magit-diff-file-heading ((t (:foreground "#268bd2" :weight bold))))
+ '(magit-diff-file-heading-highlight ((t (:foreground "#268bd2" :weight bold :background "#073642")))))
+
 ;; --- Clojure support ---
 (use-package clojure-mode             ;; teaches Emacs Clojure's syntax
   :ensure t)
@@ -181,4 +186,3 @@
 ;; Vterm shell emulator
 (use-package vterm
   :ensure t)
-
