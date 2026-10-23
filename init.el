@@ -22,6 +22,9 @@
   :bind (("C-c l" . avy-goto-char-timer)
          ("C-c k" . avy-goto-char-2)))
 
+;; Nice word wrap, no backslashes
+(global-visual-line-mode 1)
+
 (defun my-avy-insert-remote-symbol ()
   "Jump with avy, grab the symbol there, insert it back at point."
   (interactive)
