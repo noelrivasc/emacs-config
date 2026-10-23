@@ -24,6 +24,8 @@
 
 ;; Nice word wrap, no backslashes
 (global-visual-line-mode 1)
+;; leave Treemacs alone
+(add-hook 'treemacs-mode-hook (lambda () (visual-line-mode -1)))
 
 (defun my-avy-insert-remote-symbol ()
   "Jump with avy, grab the symbol there, insert it back at point."
